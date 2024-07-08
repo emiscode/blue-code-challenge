@@ -2,6 +2,10 @@
 
 - [Challenge Requirements](./requirements.md)
 
+# Demo
+
+[📺 Link to the Demo 📺 ](https://www.loom.com/share/57328e5a5bd044a09f36ed8776b71d4d)
+
 ## Run App Locally
 
 - Requirements to run
