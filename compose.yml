@@ -1,0 +1,13 @@
+services:
+  database:
+    image: "postgres:16.3-alpine3.20"
+    environment:
+      POSTGRES_DB: bluecode
+      POSTGRES_USER: bluecode
+      POSTGRES_PASSWORD: bluecode
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
