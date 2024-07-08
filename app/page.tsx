@@ -11,21 +11,30 @@ export default function Home() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchResults, setSearchResults] = useState<any>([] as any[]);
   const [pagination, setPagination] = useState<any>({} as any);
+  const [isSearching, setIsSearching] = useState(false);
 
   const handleQuery = async (query: string, itemsPerPage: number) => {
+    setIsSearching(true);
+
     const queryData = await fetchGifs({ q: query, limit: itemsPerPage });
     setSearchResults(queryData.data);
     setPagination(queryData.pagination);
+
+    setIsSearching(false);
   };
 
   const handlePageChange = async (query: string, page: number) => {
+    setIsSearching(true);
+
     const queryData = await fetchGifs({
       q: query,
       offset: page,
       limit: itemsPerPage,
     });
+
     setSearchResults(queryData.data);
     setPagination(queryData.pagination);
+    setIsSearching(false);
   };
 
   return (
@@ -43,7 +52,11 @@ export default function Home() {
         onPageChange={handlePageChange}
         itemsPerPage={itemsPerPage}
       />
-      <GifList gifs={searchResults} />
+      {isSearching ? (
+        <p className="text-blue-600 text-xl">Searching...</p>
+      ) : (
+        <GifList gifs={searchResults} />
+      )}
     </main>
   );
 }
