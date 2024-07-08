@@ -1,3 +1,4 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import React from "react";
 
 interface PaginationProps {
@@ -7,15 +8,20 @@ interface PaginationProps {
     count: number;
     offset: number;
   };
-  onPageChange: (query: string, newOffset: number) => void;
+  itemsPerPage: number;
+  onPageChange: (
+    query: string,
+    newOffset: number,
+    itemsPerPage: number
+  ) => void;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
   query,
   pagination,
   onPageChange,
+  itemsPerPage,
 }) => {
-  console.log({ pagination });
   if (!pagination.total_count) return;
 
   const totalPages = pagination
@@ -27,17 +33,29 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   const goToPage = (pageNumber: number) => {
     const newOffset = (pageNumber - 1) * pagination.count;
-    onPageChange(query, newOffset);
+    onPageChange(query, newOffset, itemsPerPage);
   };
 
   return (
-    <div className="flex gap-x-4">
-      <p>{`${currentPage} out of ${totalPages}`}</p>
+    <div className="flex gap-x-4 items-center justify-center">
       {currentPage > 1 && (
-        <button onClick={() => goToPage(currentPage - 1)}>Previous</button>
+        <button
+          onClick={() => goToPage(currentPage - 1)}
+          className="flex bg-gray-100 text-gray-600 px-4 py-2 rounded hover:bg-gray-300"
+        >
+          <ChevronLeftIcon />
+          <span>Previous</span>
+        </button>
       )}
+      <p>{`${currentPage} out of ${totalPages}`}</p>
       {currentPage < totalPages && (
-        <button onClick={() => goToPage(currentPage + 1)}>Next</button>
+        <button
+          onClick={() => goToPage(currentPage + 1)}
+          className="flex bg-gray-100 text-gray-600 px-4 py-2 rounded hover:bg-gray-300"
+        >
+          <span>Next</span>
+          <ChevronRightIcon />
+        </button>
       )}
     </div>
   );

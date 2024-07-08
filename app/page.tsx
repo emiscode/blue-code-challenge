@@ -1,42 +1,47 @@
 "use client";
 
-import useSWR from "swr";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fetchGifs } from "./actions";
 import { FormQuery } from "./components/FormQuery";
 import { GifList } from "./components/GifList";
-import { SearchHistory } from "./components/SearchHistory";
 import Pagination from "./components/Pagination";
 
 export default function Home() {
   const [query, setQuery] = useState("");
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchResults, setSearchResults] = useState<any>([] as any[]);
   const [pagination, setPagination] = useState<any>({} as any);
 
-  const handleQuery = async (query: string) => {
-    const queryData = await fetchGifs(query);
+  const handleQuery = async (query: string, itemsPerPage: number) => {
+    const queryData = await fetchGifs({ q: query, limit: itemsPerPage });
     setSearchResults(queryData.data);
     setPagination(queryData.pagination);
-    console.log("### handleQuery");
-    console.log({ queryData, pagination });
   };
 
-  const handlePageChange = async (query: string, offset: number) => {
-    const queryData = await fetchGifs(query, offset);
+  const handlePageChange = async (query: string, page: number) => {
+    const queryData = await fetchGifs({
+      q: query,
+      offset: page,
+      limit: itemsPerPage,
+    });
     setSearchResults(queryData.data);
     setPagination(queryData.pagination);
-    console.log("### handlePageChange");
-    console.log({ queryData, pagination });
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <FormQuery onQuery={handleQuery} query={query} setQuery={setQuery} />
+    <main className="flex flex-col items-center justify-between p-16 gap-y-8">
+      <FormQuery
+        onQuery={handleQuery}
+        query={query}
+        setQuery={setQuery}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+      />
       <Pagination
         query={query}
         pagination={pagination}
         onPageChange={handlePageChange}
+        itemsPerPage={itemsPerPage}
       />
       <GifList gifs={searchResults} />
     </main>

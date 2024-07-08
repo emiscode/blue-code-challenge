@@ -6,13 +6,18 @@ import { Search } from "@prisma/client";
 const GIPHY_API_URL = process.env.GIPHY_API_URL;
 const GIPHY_API_KEY = process.env.GIPHY_API_KEY;
 
-export const fetchGifs = async (
+interface fetchGifsProps {
+  q?: string;
+  offset?: number;
+  limit?: number;
+}
+
+export const fetchGifs = async ({
   q = "cat",
   offset = 0,
-  limit = 5
-): Promise<any> => {
+  limit = 5,
+}: fetchGifsProps): Promise<any> => {
   const url = `https://${GIPHY_API_URL}?api_key=${GIPHY_API_KEY}&q=${q}&offset=${offset}&limit=${limit}`;
-  console.log({ url });
 
   const response = await fetch(url);
 

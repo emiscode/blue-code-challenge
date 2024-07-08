@@ -33,9 +33,13 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
   };
 
   return (
-    <div>
-      <label htmlFor="searchHistory">History: </label>
-      <select id="searchHistory" onChange={handleChange} defaultValue="">
+    <div className="flex gap-x-4">
+      <select
+        id="searchHistory"
+        onChange={handleChange}
+        defaultValue=""
+        className="border border-gray-300 border-dotted px-4 py-2 rounded"
+      >
         <option value="" disabled>
           Last searches
         </option>
@@ -45,7 +49,12 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
           </option>
         ))}
       </select>
-      <button onClick={handleClearHistory}>Clear history</button>
+      <button
+        onClick={handleClearHistory}
+        className="bg-gray-300 text-gray-600 px-4 py-2 rounded hover:bg-gray-600 hover:text-gray-300"
+      >
+        Clear history
+      </button>
     </div>
   );
 };
